@@ -30,7 +30,7 @@ matrix:
     # Dev-master is allowed to fail.
     - env: STABILITY="dev"
 
-branches:
+branches: 
   only:
     - master
     # Build maintenance branches for older releases if needed. such branches should be named like "1.2"
