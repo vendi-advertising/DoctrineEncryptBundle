@@ -1,8 +1,9 @@
 {
   "name": "michaeldegroot/doctrine-encrypt-bundle",
-  "type": "library",
+  "type": "symfony-bundle",
   "keywords": ["doctrine", "symfony", "halite", "defuse", "encrypt", "decrypt"],
   "license": "MIT",
+  "homepage": "https://github.com/michaeldegroot/DoctrineEncryptBundle",
   "description": "Encrypted symfony entity's by verified and standardized libraries",
   "require": {
     "php": "^7.2",
@@ -15,7 +16,6 @@
     "symfony/http-kernel": "^4.1",
     "symfony/config": "^4.1"
   },
-  "license": "MIT",
   "require-dev": {
     "phpunit/phpunit": "^6.5",
     "defuse/php-encryption": "^2.1"
@@ -24,13 +24,22 @@
     "defuse/php-encryption": "Alternative for halite for use with older php-versions"
   },
   "autoload": {
-    "psr-0": { "Ambta\\DoctrineEncryptBundle": "" }
+    "psr-0": { "Ambta\\DoctrineEncryptBundle": "src/" }
+  },
+  "autoload-dev": {
+    "psr-4": { "Ambta\\DoctrineEncryptBundle\\Tests\\": "tests/" }
   },
   "target-dir": "Ambta/DoctrineEncryptBundle",
   "authors": [
     {
       "name": "GiveMeAllYourCats",
-      "email": "specamps@gmail.com"
+      "email": "specamps@gmail.com",
+      "role": "Owner"
+    },
+    {
+      "name": "David Buchmann",
+      "email": "david@liip.ch",
+      "role": "Maintainer"
     }
   ]
 }
