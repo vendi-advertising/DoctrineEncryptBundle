@@ -2,8 +2,8 @@ language: php
 
 branches:
   only:
-  - master
-  - travis
+  - gh-pages
+  - /.*/
 
 services:
   - mysql
