@@ -26,7 +26,7 @@ matrix:
     - php: 7.3
       env: STABILITY="dev"
 
-  allow_failures:
+  allow_failures: 
     # Dev-master is allowed to fail.
     - env: STABILITY="dev"
 
