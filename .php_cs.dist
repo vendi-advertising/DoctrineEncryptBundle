@@ -1,7 +1,6 @@
 <?php
 $header = <<<EOF
-This file is part of the FOSElasticaBundle package.
-(c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+This file is part of the DoctrineEncryptBundle package.
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 EOF;
@@ -24,3 +23,4 @@ return PhpCsFixer\Config::create()
         PhpCsFixer\Finder::create()
             ->in(__DIR__)
     )
+;

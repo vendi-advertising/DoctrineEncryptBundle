@@ -1,16 +1,21 @@
 <?php
 
+/*
+ * This file is part of the DoctrineEncryptBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Ambta\DoctrineEncryptBundle\Encryptors;
 
-use \ParagonIE\Halite\HiddenString;
-use \ParagonIE\Halite\KeyFactory;
+use ParagonIE\Halite\HiddenString;
+use ParagonIE\Halite\KeyFactory;
 
 /**
- * Class for encrypting and decrypting with the halite library
+ * Class for encrypting and decrypting with the halite library.
  *
  * @author Michael de Groot <specamps@gmail.com>
  */
-
 class HaliteEncryptor implements EncryptorInterface
 {
     private $encryptionKey;
@@ -39,8 +44,7 @@ class HaliteEncryptor implements EncryptorInterface
     {
         $data = \ParagonIE\Halite\Symmetric\Crypto::decrypt($data, $this->getKey());
 
-        if ($data instanceof HiddenString)
-        {
+        if ($data instanceof HiddenString) {
             $data = $data->getString();
         }
 
@@ -49,7 +53,7 @@ class HaliteEncryptor implements EncryptorInterface
 
     private function getKey()
     {
-        if ($this->encryptionKey === null) {
+        if (null === $this->encryptionKey) {
             try {
                 $this->encryptionKey = \ParagonIE\Halite\KeyFactory::loadEncryptionKey($this->keyFile);
             } catch (\ParagonIE\Halite\Alerts\CannotPerformOperation $e) {

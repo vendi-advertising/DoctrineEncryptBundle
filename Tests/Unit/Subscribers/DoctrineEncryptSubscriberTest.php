@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the DoctrineEncryptBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Ambta\DoctrineEncryptBundle\Tests\Unit\Subscribers;
 
 use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
@@ -8,9 +14,7 @@ use Ambta\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber;
 use Ambta\DoctrineEncryptBundle\Tests\Unit\Subscribers\fixtures\ExtendedUser;
 use Ambta\DoctrineEncryptBundle\Tests\Unit\Subscribers\fixtures\User;
 use Ambta\DoctrineEncryptBundle\Tests\Unit\Subscribers\fixtures\WithUser;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\Reader;
-use Doctrine\Common\Annotations\SimpleAnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Event\PreFlushEventArgs;
@@ -217,7 +221,7 @@ class DoctrineEncryptSubscriberTest extends TestCase
     }
 
     /**
-     * Test that fields are decrypted again after flushing
+     * Test that fields are decrypted again after flushing.
      */
     public function testPostFlush()
     {

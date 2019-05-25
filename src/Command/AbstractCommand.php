@@ -1,4 +1,11 @@
 <?php
+
+/*
+ * This file is part of the DoctrineEncryptBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Ambta\DoctrineEncryptBundle\Command;
 
 use Ambta\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber;
@@ -63,7 +70,7 @@ abstract class AbstractCommand extends Command
     }
 
     /**
-     * Get the number of rows in an entity-table
+     * Get the number of rows in an entity-table.
      *
      * @param string $entityName
      *
@@ -87,14 +94,13 @@ abstract class AbstractCommand extends Command
         $validMetaData = [];
         $metaDataArray = $this->entityManager->getMetadataFactory()->getAllMetadata();
 
-        foreach ($metaDataArray as $entityMetaData)
-        {
+        foreach ($metaDataArray as $entityMetaData) {
             if ($entityMetaData instanceof ClassMetadataInfo and $entityMetaData->isMappedSuperclass) {
                 continue;
             }
 
             $properties = $this->getEncryptionableProperties($entityMetaData);
-            if (count($properties) == 0) {
+            if (0 == count($properties)) {
                 continue;
             }
 
@@ -114,7 +120,7 @@ abstract class AbstractCommand extends Command
         //Create reflectionClass for each meta data object
         $reflectionClass = new \ReflectionClass($entityMetaData->name);
         $propertyArray = $reflectionClass->getProperties();
-        $properties    = [];
+        $properties = [];
 
         foreach ($propertyArray as $property) {
             if ($this->annotationReader->getPropertyAnnotation($property, 'Ambta\DoctrineEncryptBundle\Configuration\Encrypted')) {

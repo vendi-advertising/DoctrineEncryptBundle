@@ -1,15 +1,20 @@
 <?php
 
+/*
+ * This file is part of the DoctrineEncryptBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Ambta\DoctrineEncryptBundle\Encryptors;
 
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * Class for encrypting and decrypting with the defuse library
+ * Class for encrypting and decrypting with the defuse library.
  *
  * @author Michael de Groot <specamps@gmail.com>
  */
-
 class DefuseEncryptor implements EncryptorInterface
 {
     private $fs;
@@ -21,8 +26,8 @@ class DefuseEncryptor implements EncryptorInterface
      */
     public function __construct(string $keyFile)
     {
-        $this->keyFile       = $keyFile;
-        $this->fs            = new Filesystem();
+        $this->keyFile = $keyFile;
+        $this->fs = new Filesystem();
     }
 
     /**
@@ -43,7 +48,7 @@ class DefuseEncryptor implements EncryptorInterface
 
     private function getKey()
     {
-        if ($this->encryptionKey === null) {
+        if (null === $this->encryptionKey) {
             if ($this->fs->exists($this->keyFile)) {
                 $this->encryptionKey = file_get_contents($this->keyFile);
             } else {

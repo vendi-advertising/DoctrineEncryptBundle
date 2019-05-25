@@ -1,12 +1,18 @@
 <?php
 
+/*
+ * This file is part of the DoctrineEncryptBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Ambta\DoctrineEncryptBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * Configuration tree for security bundle. Full tree you can see in Resources/docs
+ * Configuration tree for security bundle. Full tree you can see in Resources/docs.
  *
  * This is the class that validates and merges configuration from your app/config files
  *
@@ -14,13 +20,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
-
         // Create tree builder
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('ambta_doctrine_encrypt');
@@ -38,5 +42,4 @@ class Configuration implements ConfigurationInterface
 
         return $treeBuilder;
     }
-
 }

@@ -1,11 +1,17 @@
 <?php
 
+/*
+ * This file is part of the DoctrineEncryptBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Ambta\DoctrineEncryptBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * Initialization of bundle.
@@ -16,13 +22,13 @@ use Symfony\Component\DependencyInjection\Loader;
  */
 class DoctrineEncryptExtension extends Extension
 {
-    const SupportedEncryptorClasses = array(
+    const SupportedEncryptorClasses = [
         'Defuse' => 'Ambta\DoctrineEncryptBundle\Encryptors\DefuseEncryptor',
         'Halite' => 'Ambta\DoctrineEncryptBundle\Encryptors\HaliteEncryptor',
-    );
+    ];
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -39,15 +45,15 @@ class DoctrineEncryptExtension extends Extension
 
         // Set parameters
         $container->setParameter('ambta_doctrine_encrypt.encryptor_class_name', $config['encryptor_class_full']);
-        $container->setParameter('ambta_doctrine_encrypt.secret_key_path',$config['secret_directory_path'].'/.'.$config['encryptor_class'].'.key');
+        $container->setParameter('ambta_doctrine_encrypt.secret_key_path', $config['secret_directory_path'].'/.'.$config['encryptor_class'].'.key');
 
         // Load service file
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
     }
 
     /**
-     * Get alias for configuration
+     * Get alias for configuration.
      *
      * @return string
      */

@@ -24,10 +24,10 @@
     "defuse/php-encryption": "Alternative for halite for use with older php-versions"
   },
   "autoload": {
-    "psr-0": { "Ambta\\DoctrineEncryptBundle": "src/" }
+    "classmap": ["src/"]
   },
   "autoload-dev": {
-    "psr-4": { "Ambta\\DoctrineEncryptBundle\\Tests\\": "tests/" }
+    "classmap": ["tests/"]
   },
   "target-dir": "Ambta/DoctrineEncryptBundle",
   "authors": [

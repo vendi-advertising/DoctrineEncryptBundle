@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the DoctrineEncryptBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Ambta\DoctrineEncryptBundle\Command;
 
 use Ambta\DoctrineEncryptBundle\DependencyInjection\DoctrineEncryptExtension;
@@ -11,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
- * Decrypt whole database on tables which are encrypted
+ * Decrypt whole database on tables which are encrypted.
  *
  * @author Marcel van Nuil <marcel@ambta.com>
  * @author Michael Feinbier <michael@feinbier.net>
@@ -54,7 +60,7 @@ class DoctrineDecryptDatabaseCommand extends AbstractCommand
                 } else {
                     $output->writeln('Given encryptor does not exists');
 
-                    return $output->writeln('Supported encryptors: ' . implode(', ', array_keys($supportedExtensions)));
+                    return $output->writeln('Supported encryptors: '.implode(', ', array_keys($supportedExtensions)));
                 }
             }
         }
@@ -74,10 +80,10 @@ class DoctrineDecryptDatabaseCommand extends AbstractCommand
         }
 
         $confirmationQuestion = new ConfirmationQuestion(
-            '<question>' . count($metaDataArray) . ' entities found which are containing ' . $propertyCount . ' properties with the encryption tag. ' . PHP_EOL . '' .
-            'Which are going to be decrypted with [' . get_class($this->subscriber->getEncryptor()) . ']. ' . PHP_EOL . '' .
-            'Wrong settings can mess up your data and it will be unrecoverable. ' . PHP_EOL . '' .
-            'I advise you to make <bg=yellow;options=bold>a backup</bg=yellow;options=bold>. ' . PHP_EOL . '' .
+            '<question>'.count($metaDataArray).' entities found which are containing '.$propertyCount.' properties with the encryption tag. '.PHP_EOL.''.
+            'Which are going to be decrypted with ['.get_class($this->subscriber->getEncryptor()).']. '.PHP_EOL.''.
+            'Wrong settings can mess up your data and it will be unrecoverable. '.PHP_EOL.''.
+            'I advise you to make <bg=yellow;options=bold>a backup</bg=yellow;options=bold>. '.PHP_EOL.''.
             'Continue with this action? (y/yes)</question>', false
         );
 
@@ -86,7 +92,7 @@ class DoctrineDecryptDatabaseCommand extends AbstractCommand
         }
 
         // Start decrypting database
-        $output->writeln('' . PHP_EOL . 'Decrypting all fields. This can take up to several minutes depending on the database size.');
+        $output->writeln(''.PHP_EOL.'Decrypting all fields. This can take up to several minutes depending on the database size.');
 
         $valueCounter = 0;
 
@@ -111,30 +117,29 @@ class DoctrineDecryptDatabaseCommand extends AbstractCommand
                 foreach ($this->getEncryptionableProperties($metaData) as $property) {
                     $methodeName = ucfirst($property->getName());
 
-                    $getter = 'get' . $methodeName;
-                    $setter = 'set' . $methodeName;
+                    $getter = 'get'.$methodeName;
+                    $setter = 'set'.$methodeName;
 
                     //Check if getter and setter are set
                     if ($entityReflectionClass->hasMethod($getter) && $entityReflectionClass->hasMethod($setter)) {
                         $unencrypted = $entity->$getter();
                         $entity->$setter($unencrypted);
-                        $valueCounter++;
+                        ++$valueCounter;
                     }
                 }
 
                 $this->subscriber->setEncryptor(null);
                 $this->entityManager->persist($entity);
 
-                if (($i % $batchSize) === 0) {
+                if (0 === ($i % $batchSize)) {
                     $this->entityManager->flush();
                     $this->entityManager->clear();
                 }
                 $progressBar->advance(1);
-                $i++;
+                ++$i;
 
                 $this->subscriber->setEncryptor($encryptorUsed);
             }
-
 
             $progressBar->finish();
             $output->writeln('');
@@ -145,6 +150,6 @@ class DoctrineDecryptDatabaseCommand extends AbstractCommand
             $this->subscriber->setEncryptor($encryptorUsed);
         }
 
-        $output->writeln('' . PHP_EOL . 'Decryption finished values found: <info>' . $valueCounter . '</info>, decrypted: <info>' . $this->subscriber->decryptCounter . '</info>.' . PHP_EOL . 'All values are now decrypted.');
+        $output->writeln(''.PHP_EOL.'Decryption finished values found: <info>'.$valueCounter.'</info>, decrypted: <info>'.$this->subscriber->decryptCounter.'</info>.'.PHP_EOL.'All values are now decrypted.');
     }
 }

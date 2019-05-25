@@ -9,19 +9,13 @@
 
     <testsuites>
         <testsuite name="unit">
-            <directory suffix="Test.php">./tests/Unit</directory>
+            <directory>./tests</directory>
         </testsuite>
-        <!-- <testsuite name="functional">
-            <directory suffix="Test.php">./tests/Functional</directory>
-        </testsuite> -->
     </testsuites>
 
     <filter>
         <whitelist>
             <directory>./src</directory>
-            <exclude>
-                <directory>./src/Resources</directory>
-            </exclude>
         </whitelist>
     </filter>
 

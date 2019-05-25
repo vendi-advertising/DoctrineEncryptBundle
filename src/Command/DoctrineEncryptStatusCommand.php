@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the DoctrineEncryptBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Ambta\DoctrineEncryptBundle\Command;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -33,7 +39,7 @@ class DoctrineEncryptStatusCommand extends AbstractCommand
 
         $totalCount = 0;
         foreach ($metaDataArray as $metaData) {
-            if ($metaData instanceof ClassMetadataInfo  and $metaData->isMappedSuperclass) {
+            if ($metaData instanceof ClassMetadataInfo and $metaData->isMappedSuperclass) {
                 continue;
             }
 
