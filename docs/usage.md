@@ -38,4 +38,4 @@ We keep an <ENC> prefix to check if data is encrypted or not so, unencrypted dat
 There are some console commands that can help you encrypt your existing database or change encryption methods.
 Read more about the database encryption commands provided with this bundle.
 
-## [Next: Example](example.md)
+## [Next: Example](example_of_usage.md)
