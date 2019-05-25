@@ -24,9 +24,9 @@ DoctrineEncrypt\Entity\UserDetail has 13 properties which are encrypted.
 
 You can use the comment `doctrine:encrypt:database [encryptor]` to encrypt the current database.
 
-* Optional parameter [encryptor]
-    * An encryptor provided by the bundle (Defuse or Halite) or your own [encryption class](https://github.com/michaeldegroot/DoctrineEncryptBundle/blob/master/Resources/doc/custom_encryptor.md).
-    * Default: Your encryptor set in the configuration file or the default encryption class when not set in the configuration file
+- Optional parameter [encryptor]
+  - An encryptor provided by the bundle (Defuse or Halite) or your own [encryption class](docs/custom_encryptor.md).
+  - Default: Your encryptor set in the configuration file or the default encryption class when not set in the configuration file
 
 ```
 $ php app/console doctrine:encrypt:database
@@ -48,14 +48,13 @@ This command will return the amount of values encrypted in the database.
 Encryption finished values encrypted: 203 values.
 ```
 
-
 ## 3) Decrypt current database
 
 You can use the comment `doctrine:decrypt:database [encryptor]` to decrypt the current database.
 
-* Optional parameter [encryptor]
-    * An encryptor provided by the bundle (Defuse or Halite) or your own [encryption class](https://github.com/michaeldegroot/DoctrineEncryptBundle/blob/master/Resources/doc/custom_encryptor.md).
-    * Default: Your encryptor set in the configuration file or the default encryption class when not set in the configuration file
+- Optional parameter [encryptor]
+  - An encryptor provided by the bundle (Defuse or Halite) or your own [encryption class](docs/custom_encryptor.md).
+  - Default: Your encryptor set in the configuration file or the default encryption class when not set in the configuration file
 
 ```
 $ php app/console doctrine:decrypt:database
@@ -81,4 +80,4 @@ Decryption finished entities found: 26, decrypted 195 values.
 
 You may want to use your own encryption class learn how here:
 
-#### [Custom encryption class](https://github.com/michaeldegroot/DoctrineEncryptBundle/blob/master/Resources/doc/custom_encryptor.md)
+#### [Custom encryption class](docs/custom_encryptor.md)

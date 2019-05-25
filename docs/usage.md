@@ -2,7 +2,7 @@
 
 ### Entity
 
-``` php
+```php
 namespace Acme\DemoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -38,4 +38,4 @@ We keep an <ENC> prefix to check if data is encrypted or not so, unencrypted dat
 There are some console commands that can help you encrypt your existing database or change encryption methods.
 Read more about the database encryption commands provided with this bundle.
 
-#### [Console commands](https://github.com/michaeldegroot/DoctrineEncryptBundle/blob/master/Resources/doc/commands.md)
+## [Next: Example](docs/example.md)

@@ -1,65 +1,19 @@
-[![Logo](https://i.imgur.com/sfmU6wt.png)](https://github.com/michaeldegroot/DoctrineEncryptBundle) 
+[![Logo](https://i.imgur.com/sfmU6wt.png)](https://github.com/michaeldegroot/DoctrineEncryptBundle)
 
-[![Build status](https://travis-ci.org/michaeldegroot/DoctrineEncryptBundle.svg?branch=master)](https://travis-ci.org/michaeldegroot/DoctrineEncryptBundle) 
-[![Coverage Status](https://coveralls.io/repos/github/michaeldegroot/docker-test/badge.svg?branch=master)](https://coveralls.io/github/michaeldegroot/docker-test?branch=master) 
-[![License](https://img.shields.io/github/license/michaeldegroot/DoctrineEncryptBundle.svg)](https://raw.githubusercontent.com/michaeldegroot/DoctrineEncryptBundle/master/LICENSE) 
-[![Latest version](https://poser.pugx.org/michaeldegroot/doctrine-encrypt-bundle/version)](https://packagist.org/packages/michaeldegroot/doctrine-encrypt-bundle) 
-[![Latest Unstable Version](https://poser.pugx.org/michaeldegroot/doctrine-encrypt-bundle/v/unstable)](https://packagist.org/packages/michaeldegroot/doctrine-encrypt-bundle) 
-[![Total downloads](https://poser.pugx.org/michaeldegroot/doctrine-encrypt-bundle/downloads)](https://packagist.org/packages/michaeldegroot/doctrine-encrypt-bundle) 
-[![Downloads this month](https://poser.pugx.org/michaeldegroot/doctrine-encrypt-bundle/d/monthly)](https://packagist.org/packages/michaeldegroot/doctrine-encrypt-bundle) 
+[![Build status](https://travis-ci.org/michaeldegroot/DoctrineEncryptBundle.svg?branch=master)](https://travis-ci.org/michaeldegroot/DoctrineEncryptBundle)
+[![Coverage Status](https://coveralls.io/repos/github/michaeldegroot/docker-test/badge.svg?branch=master)](https://coveralls.io/github/michaeldegroot/docker-test?branch=master)
+[![License](https://img.shields.io/github/license/michaeldegroot/DoctrineEncryptBundle.svg)](https://raw.githubusercontent.com/michaeldegroot/DoctrineEncryptBundle/master/LICENSE)
+[![Latest version](https://poser.pugx.org/michaeldegroot/doctrine-encrypt-bundle/version)](https://packagist.org/packages/michaeldegroot/doctrine-encrypt-bundle)
+[![Latest Unstable Version](https://poser.pugx.org/michaeldegroot/doctrine-encrypt-bundle/v/unstable)](https://packagist.org/packages/michaeldegroot/doctrine-encrypt-bundle)
+[![Total downloads](https://poser.pugx.org/michaeldegroot/doctrine-encrypt-bundle/downloads)](https://packagist.org/packages/michaeldegroot/doctrine-encrypt-bundle)
+[![Downloads this month](https://poser.pugx.org/michaeldegroot/doctrine-encrypt-bundle/d/monthly)](https://packagist.org/packages/michaeldegroot/doctrine-encrypt-bundle)
 
-### Introduction
+Encrypted entities by trusted libraries in the field of encryption such as halite (libsodium), and defuse
 
-This is a fork from the original bundle created by ambta which can be found here:
-[ambta/DoctrineEncryptBundle](https://github.com/ambta/DoctrineEncryptBundle)
-
-This bundle has updated security by not rolling it's own encryption and using verified standardized library's from the field.
-
-### Using [Halite](https://github.com/paragonie/halite)
-
-*All deps are already installed with this package*
-
-```yml
-// Config.yml
-ambta_doctrine_encrypt:
-    encryptor_class: Halite
-```
-
-### Using [Defuse](https://github.com/defuse/php-encryption)
-
-*You will need to require Defuse yourself*
-
-`composer require "defuse/php-encryption ^2.0"`
-
-```yml
-// Config.yml
-ambta_doctrine_encrypt:
-    encryptor_class: Defuse
-```
-
-
-
-### Secret key
-
-The secret key should be a max 32 byte hexadecimal string (`[0-9a-fA-F]`).
-
-Secret key is generated if there is no key found. This is automatically generated and stored in the folder defined in the configuration
-
-```yml
-// Config.yml
-ambta_doctrine_encrypt:
-    secret_directory_path: '%kernel.project_dir%'   # Default value
-```
-
-Filename example: `.DefuseEncryptor.key` or `.HaliteEncryptor.key`
-
-**Do not forget to add these files to your .gitignore file, you do not want this on your repository!**
-
-### Documentation
-
-* [Installation](Resources/doc/installation.md)
-* [Requirements](Resources/doc/installation.md#requirements)
-* [Configuration](Resources/doc/configuration.md)
-* [Usage](Resources/doc/usage.md)
-* [Console commands](Resources/doc/commands.md)
-* [Custom encryption class](Resources/doc/custom_encryptor.md)
+- [1. Choose encryption library](docs/library.md)
+- [2. Installation](docs/installation.md)
+- [3. Configuration](docs/configuration.md)
+- [4. Usage](docs/usage.md)
+- [5. Example](docs/example_of_usage.md)
+- [6. Console commands](docs/commands.md)
+- [7. Custom encryption class](docs/custom_encryptor.md)
