@@ -15,7 +15,7 @@ matrix:
       env: COMPOSER_FLAGS="--prefer-lowest"
 
     - php: 7.3
-      env: COVERAGE=true PHPUNIT_FLAGS="-v  --coverage-clover ./build/logs/clover.xml"
+      env: COVERAGE=true PHPUNIT_FLAGS="-v --coverage-text"
 
     # Symfony 4
     - php: 7.3
