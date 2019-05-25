@@ -18,6 +18,10 @@
             <directory>./src</directory>
         </whitelist>
     </filter>
+    
+    <logging>
+        <log type="coverage-clover" target="./build/logs/clover.xml"/>
+    </logging>
 
     <php>
         <env name="KERNEL_DIR" value="./tests/Functional/Fixtures/app" />

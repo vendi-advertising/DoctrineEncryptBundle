@@ -15,7 +15,7 @@ matrix:
       env: COMPOSER_FLAGS="--prefer-lowest"
 
     - php: 7.3
-      env: COVERAGE=true PHPUNIT_FLAGS="-v  --coverage-clover ./tests/logs/clover.xml"
+      env: COVERAGE=true PHPUNIT_FLAGS="-v  --coverage-clover ./build/logs/clover.xml"
 
     # Symfony 4
     - php: 7.3
@@ -45,6 +45,7 @@ install:
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require --dev --no-update dunglas/symfony-lock=$SYMFONY_VERSION; fi;
 
 before_script:
+  - mkdir -p build/logs
   - phpenv config-add .travis/php.ini
   - mysql -u root -e 'CREATE DATABASE encryptbundle;'
   - mysql -u root -e "CREATE USER 'encryptbundle'@'localhost' IDENTIFIED BY 'encryptbundle';"
