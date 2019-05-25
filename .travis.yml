@@ -32,6 +32,7 @@ matrix:
 branches:
   only:
     - master
+    - travis
     # Build maintenance branches for older releases if needed. such branches should be named like "1.2"
     - '/^\d+\.\d+$/'
 
