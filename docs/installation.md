@@ -51,4 +51,4 @@ public function registerBundles()
 All configuration value's are optional.
 On the following page you can find the configuration information.
 
-## [Next: Configuration](docs/configuration.md)
+## [Next: Configuration](configuration.md)

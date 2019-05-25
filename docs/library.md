@@ -36,4 +36,4 @@ Filenames for your secret keys that are generated: `.DefuseEncryptor.key` or `.H
 
 **Do not forget to add these files to your .gitignore file, you do not want this on your repository!**
 
-## [Next: Installation](docs/installation.md)
+## [Next: Installation](installation.md)

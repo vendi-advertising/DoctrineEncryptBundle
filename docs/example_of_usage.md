@@ -137,4 +137,4 @@ So our information is encrypted, and unless someone has your .DefuseEncryptor.ke
 
 You need `DoctrineFixturesBundle` and `defuse/php-encryption` extension for this example
 
-## [Next: Console commands](docs/commands.md)
+## [Next: Console commands](commands.md)
