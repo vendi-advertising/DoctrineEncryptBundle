@@ -25,4 +25,4 @@ composer require "defuse/php-encryption ^2.0"
 
 Read how to use the database encryption bundle in your project.
 
-#### [Usage](docs/usage.md)
+## [Next: Usage](usage.md)

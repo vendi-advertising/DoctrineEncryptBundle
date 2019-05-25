@@ -80,4 +80,4 @@ Decryption finished entities found: 26, decrypted 195 values.
 
 You may want to use your own encryption class learn how here:
 
-#### [Custom encryption class](docs/custom_encryptor.md)
+## [Next: Custom encryption class](custom_encryptor.md)
