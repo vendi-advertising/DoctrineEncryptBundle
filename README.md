@@ -1,7 +1,7 @@
 [![Logo](https://i.imgur.com/sfmU6wt.png)](https://github.com/michaeldegroot/DoctrineEncryptBundle) 
 
 [![Build status](https://travis-ci.org/michaeldegroot/DoctrineEncryptBundle.svg?branch=master)](https://travis-ci.org/michaeldegroot/DoctrineEncryptBundle) 
-[![Coverage Status](https://coveralls.io/repos/github/michaeldegroot/DoctrineEncryptBundle/badge.svg?branch=master)](https://coveralls.io/github/michaeldegroot/docker-test?branch=master) 
+[![Coverage Status](https://coveralls.io/repos/github/michaeldegroot/DoctrineEncryptBundle/badge.svg?branch=master)](https://coveralls.io/github/michaeldegroot/DoctrineEncryptBundle?branch=master) 
 [![License](https://img.shields.io/github/license/michaeldegroot/DoctrineEncryptBundle.svg)](https://raw.githubusercontent.com/michaeldegroot/DoctrineEncryptBundle/master/LICENSE) 
 [![Latest version](https://poser.pugx.org/michaeldegroot/doctrine-encrypt-bundle/version)](https://packagist.org/packages/michaeldegroot/doctrine-encrypt-bundle) 
 [![Latest Unstable Version](https://poser.pugx.org/michaeldegroot/doctrine-encrypt-bundle/v/unstable)](https://packagist.org/packages/michaeldegroot/doctrine-encrypt-bundle) 
