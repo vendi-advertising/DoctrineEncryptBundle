@@ -35,7 +35,7 @@ class DoctrineEncryptSubscriberTest extends TestCase
      */
     private $reader;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->encryptor = $this->createMock(EncryptorInterface::class);
         $this->encryptor
