@@ -1,5 +1,5 @@
 {
-  "name": "vendiadvertising/doctrine-encrypt-bundle",
+  "name": "vendi-advertising/doctrine-encrypt-bundle",
   "type": "library",
   "keywords": ["doctrine", "symfony", "halite", "defuse", "encrypt", "decrypt"],
   "license": "MIT",
