@@ -32,7 +32,7 @@ class DoctrineEncryptDatabaseCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // Get entity manager, question helper, subscriber service and annotation reader
         $question = $this->getHelper('question');
@@ -84,7 +84,7 @@ class DoctrineEncryptDatabaseCommand extends AbstractCommand
             $output->writeln(sprintf('Processing <comment>%s</comment>', $metaData->name));
             $progressBar = new ProgressBar($output, $totalCount);
             foreach ($iterator as $row) {
-                $this->subscriber->processFields($row[0]);
+                $this->subscriber->processFields((is_array($row) ? $row[0] : $row));
 
                 if (($i % $batchSize) === 0) {
                     $this->entityManager->flush();
@@ -101,6 +101,7 @@ class DoctrineEncryptDatabaseCommand extends AbstractCommand
 
         // Say it is finished
         $output->writeln('Encryption finished. Values encrypted: <info>' . $this->subscriber->encryptCounter . ' values</info>.' . PHP_EOL . 'All values are now encrypted.');
+        return 1;
     }
 
 

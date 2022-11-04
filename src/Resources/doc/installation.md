@@ -6,7 +6,7 @@
 
 ### Requirements
 
- - PHP >=7.0
+ - PHP >=8.0
  - Comes with package: [paragonie/sodium_compat](https://github.com/paragonie/sodium_compat) ^1.5
  - Comes with package: [Halite](https://github.com/paragonie/halite) ^3.0
  - [doctrine/orm](https://packagist.org/packages/doctrine/orm) >= 2.0

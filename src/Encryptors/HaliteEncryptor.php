@@ -3,6 +3,7 @@
 namespace Ambta\DoctrineEncryptBundle\Encryptors;
 
 use ParagonIE\Halite\Alerts\CannotPerformOperation;
+use ParagonIE\Halite\Symmetric\EncryptionKey;
 use ParagonIE\HiddenString\HiddenString;
 use ParagonIE\Halite\KeyFactory;
 use ParagonIE\Halite\Symmetric\Crypto;
@@ -15,8 +16,8 @@ use ParagonIE\Halite\Symmetric\Crypto;
 
 class HaliteEncryptor implements EncryptorInterface
 {
-    private $encryptionKey;
-    private $keyFile;
+    private ?EncryptionKey $encryptionKey = null;
+    private string $keyFile;
 
     /**
      * {@inheritdoc}
@@ -29,7 +30,7 @@ class HaliteEncryptor implements EncryptorInterface
     /**
      * {@inheritdoc}
      */
-    public function encrypt($data)
+    public function encrypt(string $data): string
     {
         return Crypto::encrypt(new HiddenString($data), $this->getKey());
     }
@@ -37,7 +38,7 @@ class HaliteEncryptor implements EncryptorInterface
     /**
      * {@inheritdoc}
      */
-    public function decrypt($data)
+    public function decrypt(string $data): string
     {
         $data = Crypto::decrypt($data, $this->getKey());
 
@@ -49,7 +50,7 @@ class HaliteEncryptor implements EncryptorInterface
         return $data;
     }
 
-    private function getKey()
+    private function getKey(): EncryptionKey
     {
         if ($this->encryptionKey === null) {
             try {

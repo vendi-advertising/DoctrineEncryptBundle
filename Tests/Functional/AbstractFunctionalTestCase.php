@@ -75,7 +75,8 @@ abstract class AbstractFunctionalTestCase extends TestCase
 
     public function tearDown(): void
     {
-        @unlink($this->dbFile);
+        $this->entityManager->getConnection()->close();
+        unlink($this->dbFile);
     }
 
     protected function getLatestInsertQuery(): ?array
