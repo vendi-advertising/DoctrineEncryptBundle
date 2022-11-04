@@ -1,7 +1,14 @@
 services:
+    ambta_doctrine_attribute_reader:
+        class: Ambta\DoctrineEncryptBundle\Mapping\AttributeReader
+
+    ambta_doctrine_annotation_reader:
+        class: Ambta\DoctrineEncryptBundle\Mapping\AttributeAnnotationReader
+        arguments: ["@ambta_doctrine_attribute_reader", "@annotations.reader"]
+
     ambta_doctrine_encrypt.orm_subscriber:
         class: Ambta\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber
-        arguments: ["@annotation_reader", "@ambta_doctrine_encrypt.encryptor"]
+        arguments: ["@ambta_doctrine_annotation_reader", "@ambta_doctrine_encrypt.encryptor"]
         tags:
             -  { name: doctrine.event_subscriber }
 
@@ -18,7 +25,7 @@ services:
         tags: ['console.command']
         arguments:
             - "@doctrine.orm.entity_manager"
-            - "@annotation_reader"
+            - "@ambta_doctrine_annotation_reader"
             - "@ambta_doctrine_encrypt.subscriber"
 
     ambta_doctrine_encrypt.command.encrypt.database:
@@ -26,7 +33,7 @@ services:
         tags: ['console.command']
         arguments:
             - "@doctrine.orm.entity_manager"
-            - "@annotation_reader"
+            - "@ambta_doctrine_annotation_reader"
             - "@ambta_doctrine_encrypt.subscriber"
 
     ambta_doctrine_encrypt.command.encrypt.status:
@@ -34,5 +41,5 @@ services:
         tags: ['console.command']
         arguments:
             - "@doctrine.orm.entity_manager"
-            - "@annotation_reader"
+            - "@ambta_doctrine_annotation_reader"
             - "@ambta_doctrine_encrypt.subscriber"

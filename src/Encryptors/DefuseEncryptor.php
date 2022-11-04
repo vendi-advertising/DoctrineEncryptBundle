@@ -12,9 +12,9 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class DefuseEncryptor implements EncryptorInterface
 {
-    private $fs;
-    private $encryptionKey;
-    private $keyFile;
+    private Filesystem $fs;
+    private ?string $encryptionKey = null;
+    private string $keyFile;
 
     /**
      * {@inheritdoc}
@@ -28,7 +28,7 @@ class DefuseEncryptor implements EncryptorInterface
     /**
      * {@inheritdoc}
      */
-    public function encrypt($data)
+    public function encrypt(string $data): string
     {
         return \Defuse\Crypto\Crypto::encryptWithPassword($data, $this->getKey());
     }
@@ -36,12 +36,12 @@ class DefuseEncryptor implements EncryptorInterface
     /**
      * {@inheritdoc}
      */
-    public function decrypt($data)
+    public function decrypt(string $data): string
     {
         return \Defuse\Crypto\Crypto::decryptWithPassword($data, $this->getKey());
     }
 
-    private function getKey()
+    private function getKey(): string
     {
         if ($this->encryptionKey === null) {
             if ($this->fs->exists($this->keyFile)) {

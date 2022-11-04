@@ -18,17 +18,17 @@ abstract class AbstractCommand extends Command
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface|EntityManager $entityManager;
 
     /**
      * @var DoctrineEncryptSubscriber
      */
-    protected $subscriber;
+    protected DoctrineEncryptSubscriber $subscriber;
 
     /**
      * @var Reader
      */
-    protected $annotationReader;
+    protected Reader $annotationReader;
 
     /**
      * AbstractCommand constructor.
@@ -52,14 +52,13 @@ abstract class AbstractCommand extends Command
      * Get an result iterator over the whole table of an entity.
      *
      * @param string $entityName
-     *
-     * @return \Doctrine\ORM\Internal\Hydration\IterableResult
+     * @return iterable|array
      */
-    protected function getEntityIterator($entityName)
+    protected function getEntityIterator(string $entityName): iterable
     {
         $query = $this->entityManager->createQuery(sprintf('SELECT o FROM %s o', $entityName));
 
-        return $query->iterate();
+        return $query->toIterable();
     }
 
     /**
@@ -69,7 +68,7 @@ abstract class AbstractCommand extends Command
      *
      * @return int
      */
-    protected function getTableCount($entityName)
+    protected function getTableCount(string $entityName): int
     {
         $query = $this->entityManager->createQuery(sprintf('SELECT COUNT(o) FROM %s o', $entityName));
 
@@ -82,7 +81,7 @@ abstract class AbstractCommand extends Command
      *
      * @return array
      */
-    protected function getEncryptionableEntityMetaData()
+    protected function getEncryptionableEntityMetaData(): array
     {
         $validMetaData = [];
         $metaDataArray = $this->entityManager->getMetadataFactory()->getAllMetadata();
@@ -109,7 +108,7 @@ abstract class AbstractCommand extends Command
      *
      * @return array
      */
-    protected function getEncryptionableProperties($entityMetaData)
+    protected function getEncryptionableProperties($entityMetaData): array
     {
         //Create reflectionClass for each meta data object
         $reflectionClass = new \ReflectionClass($entityMetaData->name);
