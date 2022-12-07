@@ -219,6 +219,11 @@ class DoctrineEncryptSubscriber implements EventSubscriber
             Events::postFlush,
         );
     }
+    
+    private function isEmbeddedProperty(ReflectionProperty $refProperty) : bool
+    {
+        return count($refProperty->getAttributes(\Doctrine\ORM\Mapping\Embedded::class)) > 0;
+    }
 
     /**
      * Process (encrypt/decrypt) entities fields
@@ -243,7 +248,8 @@ class DoctrineEncryptSubscriber implements EventSubscriber
 
             // Foreach property in the reflection class
             foreach ($properties as $refProperty) {
-                if ($this->annReader->getPropertyAnnotation($refProperty, 'Doctrine\ORM\Mapping\Embedded')) {
+                if($this->isEmbeddedProperty($refProperty, $isEncryptOperation)){
+                //if ($this->annReader->getPropertyAnnotation($refProperty, 'Doctrine\ORM\Mapping\Embedded')) {
                     $this->handleEmbeddedAnnotation($entity, $refProperty, $isEncryptOperation);
                     continue;
                 }
@@ -291,7 +297,7 @@ class DoctrineEncryptSubscriber implements EventSubscriber
 
         $embeddedEntity = $pac->getValue($entity, $propName);
 
-        if ($embeddedEntity) {
+        if ($embeddedEntity && is_object($embeddedEntity)) {
             $this->processFields($embeddedEntity, $isEncryptOperation);
         }
     }
