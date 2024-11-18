@@ -7,27 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 class WithUser
 {
-    /**
-     * @var string
-     * @Encrypted()
-     */
-    public $name;
-
-    /**
-     * @var string|null
-     */
-    public $foo;
-
-    /**
-     * @var User
-     * @ORM\Embedded()
-     */
-    public $user;
-
-    public function __construct(string $name, string $foo, User $user)
-    {
-        $this->name = $name;
-        $this->foo = $foo;
-        $this->user = $user;
-    }
+    public function __construct(
+        #[Encrypted] public string $name,
+        public string $foo,
+        #[ORM\Embedded] public User $user,
+    ) {}
 }

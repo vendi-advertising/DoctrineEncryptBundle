@@ -71,7 +71,7 @@ abstract class AbstractDoctrineEncryptSubscriberTestCase extends AbstractFunctio
         $this->assertEquals($secret, $cascadeTarget->getSecret());
         $this->assertEquals($notSecret, $cascadeTarget->getNotSecret());
         $stmt->bindValue(1, $cascadeTarget->getId());
-        $stmt->execute();
+        $stmt->executeQuery();
         $results = $stmt->fetchAll();
         $this->assertCount(1, $results);
         $result = $results[0];

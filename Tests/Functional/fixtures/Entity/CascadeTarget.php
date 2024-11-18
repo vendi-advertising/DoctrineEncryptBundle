@@ -2,71 +2,49 @@
 
 namespace Ambta\DoctrineEncryptBundle\Tests\Functional\fixtures\Entity;
 
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity()
- *
- */
+#[ORM\Entity]
 class CascadeTarget
 {
     /**
      * @var int
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
     private $id;
 
-    /**
-     * @Ambta\DoctrineEncryptBundle\Configuration\Encrypted()
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $secret;
+    #[Encrypted]
+    #[ORM\Column(type: 'string', nullable: true)]
+    private mixed $secret;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $notSecret;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private mixed $notSecret;
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSecret()
+    public function getSecret(): mixed
     {
         return $this->secret;
     }
 
-    /**
-     * @param mixed $secret
-     */
-    public function setSecret($secret): void
+    public function setSecret(mixed $secret): void
     {
         $this->secret = $secret;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getNotSecret()
+    public function getNotSecret(): mixed
     {
         return $this->notSecret;
     }
 
-    /**
-     * @param mixed $notSecret
-     */
-    public function setNotSecret($notSecret): void
+    public function setNotSecret(mixed $notSecret): void
     {
         $this->notSecret = $notSecret;
     }
-
 }

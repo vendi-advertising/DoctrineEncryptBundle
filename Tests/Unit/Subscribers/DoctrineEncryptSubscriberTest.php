@@ -2,7 +2,6 @@
 
 namespace Ambta\DoctrineEncryptBundle\Tests\Unit\Subscribers;
 
-use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use Ambta\DoctrineEncryptBundle\Encryptors\EncryptorInterface;
 use Ambta\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber;
 use Ambta\DoctrineEncryptBundle\Tests\Unit\Subscribers\fixtures\ExtendedUser;
@@ -13,7 +12,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Mapping\Embedded;
 use Doctrine\ORM\UnitOfWork;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -30,11 +28,6 @@ class DoctrineEncryptSubscriberTest extends TestCase
      */
     private $encryptor;
 
-    /**
-     * @var Reader|MockObject
-     */
-    private $reader;
-
     protected function setUp(): void
     {
         $this->encryptor = $this->createMock(EncryptorInterface::class);
@@ -42,33 +35,16 @@ class DoctrineEncryptSubscriberTest extends TestCase
             ->expects($this->any())
             ->method('encrypt')
             ->willReturnCallback(function (string $arg) {
-                return 'encrypted-'.$arg;
-            })
-        ;
+                return 'encrypted-' . $arg;
+            });
         $this->encryptor
             ->expects($this->any())
             ->method('decrypt')
             ->willReturnCallback(function (string $arg) {
                 return preg_replace('/^encrypted-/', '', $arg);
-            })
-        ;
+            });
 
-        $this->reader = $this->createMock(Reader::class);
-        $this->reader->expects($this->any())
-            ->method('getPropertyAnnotation')
-            ->willReturnCallback(function (\ReflectionProperty $reflProperty, string $class) {
-                if (Encrypted::class === $class) {
-                    return \in_array($reflProperty->getName(), ['name', 'address', 'extra']);
-                }
-                if (Embedded::class === $class) {
-                    return 'user' === $reflProperty->getName();
-                }
-
-                return false;
-            })
-        ;
-
-        $this->subscriber = new DoctrineEncryptSubscriber($this->reader, $this->encryptor);
+        $this->subscriber = new DoctrineEncryptSubscriber($this->encryptor);
     }
 
     public function testSetRestorEncryptor(): void
@@ -198,15 +174,15 @@ class DoctrineEncryptSubscriberTest extends TestCase
         $user = new User('David', 'Switzerland');
 
         $uow = $this->createMock(UnitOfWork::class);
-        $uow->expects($this->any())
+        $uow
+            ->expects($this->any())
             ->method('getScheduledEntityInsertions')
-            ->willReturn([$user])
-        ;
+            ->willReturn([$user]);
         $em = $this->createMock(EntityManagerInterface::class);
-        $em->expects($this->any())
+        $em
+            ->expects($this->any())
             ->method('getUnitOfWork')
-            ->willReturn($uow)
-        ;
+            ->willReturn($uow);
         $classMetaData = $this->createMock(ClassMetadata::class);
         $em->expects($this->once())->method('getClassMetadata')->willReturn($classMetaData);
         $uow->expects($this->once())->method('recomputeSingleEntityChangeSet');
@@ -227,15 +203,15 @@ class DoctrineEncryptSubscriberTest extends TestCase
         $user = new User('encrypted-David<ENC>', 'encrypted-Switzerland<ENC>');
 
         $uow = $this->createMock(UnitOfWork::class);
-        $uow->expects($this->any())
+        $uow
+            ->expects($this->any())
             ->method('getIdentityMap')
-            ->willReturn([[$user]])
-        ;
+            ->willReturn([[$user]]);
         $em = $this->createMock(EntityManagerInterface::class);
-        $em->expects($this->any())
+        $em
+            ->expects($this->any())
             ->method('getUnitOfWork')
-            ->willReturn($uow)
-        ;
+            ->willReturn($uow);
         $postFlush = new PostFlushEventArgs($em);
 
         $this->subscriber->postFlush($postFlush);

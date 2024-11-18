@@ -8,11 +8,9 @@ use Attribute;
  * The Encrypted class handles the @Encrypted annotation.
  *
  * @author Victor Melnik <melnikvictorl@gmail.com>
- * @Annotation
- * @Target("PROPERTY")
  */
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class Encrypted implements Annotation
+class Encrypted
 {
     // Placeholder
 }

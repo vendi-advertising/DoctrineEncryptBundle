@@ -5,17 +5,14 @@ namespace Ambta\DoctrineEncryptBundle\Tests\Functional;
 
 
 use Ambta\DoctrineEncryptBundle\Encryptors\EncryptorInterface;
-use Ambta\DoctrineEncryptBundle\Encryptors\HaliteEncryptor;
 use Ambta\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\DBAL\Logging\DebugStack;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\Tools\SchemaTool;
-use Doctrine\ORM\Tools\Setup;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\InvalidArgumentHelper;
 
 abstract class AbstractFunctionalTestCase extends TestCase
 {
@@ -40,20 +37,19 @@ abstract class AbstractFunctionalTestCase extends TestCase
         $cache                     = null;
         $useSimpleAnnotationReader = false;
 
-        $config = Setup::createAnnotationMetadataConfiguration(
-            array(__DIR__ . "/fixtures/Entity"),
+        $config = ORMSetup::createAttributeMetadataConfiguration(
+            [__DIR__ . "/fixtures/Entity"],
             $isDevMode,
             $proxyDir,
             $cache,
-            $useSimpleAnnotationReader
         );
 
         // database configuration parameters
         $this->dbFile = tempnam(sys_get_temp_dir(), 'amb_db');
-        $conn = array(
+        $conn         = [
             'driver' => 'pdo_sqlite',
             'path'   => $this->dbFile,
-        );
+        ];
 
         // obtaining the entity manager
         $this->entityManager = EntityManager::create($conn, $config);
@@ -66,8 +62,8 @@ abstract class AbstractFunctionalTestCase extends TestCase
         $this->sqlLoggerStack = new DebugStack();
         $this->entityManager->getConnection()->getConfiguration()->setSQLLogger($this->sqlLoggerStack);
 
-        $this->encryptor = $this->getEncryptor();
-        $this->subscriber = new DoctrineEncryptSubscriber(new AnnotationReader(),$this->encryptor);
+        $this->encryptor  = $this->getEncryptor();
+        $this->subscriber = new DoctrineEncryptSubscriber($this->encryptor);
         $this->entityManager->getEventManager()->addEventSubscriber($this->subscriber);
 
         error_reporting(E_ALL);
@@ -90,7 +86,7 @@ abstract class AbstractFunctionalTestCase extends TestCase
 
     protected function getLatestUpdateQuery(): ?array
     {
-        $insertQueries = array_values(array_filter($this->sqlLoggerStack->queries,static function ($queryData) {
+        $insertQueries = array_values(array_filter($this->sqlLoggerStack->queries, static function ($queryData) {
             return stripos($queryData['sql'], 'UPDATE ') === 0;
         }));
 
@@ -114,22 +110,24 @@ abstract class AbstractFunctionalTestCase extends TestCase
      */
     public function assertStringDoesNotContain($needle, $string, $ignoreCase = false, $message = ''): void
     {
-        if (!\is_string($needle)) {
-            throw InvalidArgumentHelper::factory(1, 'string');
+        if ( ! \is_string($needle)) {
+            throw new \InvalidArgumentException(sprintf('Argument %d passed to %s must be a string, %s given', 1, __METHOD__, \gettype($needle)));
         }
 
-        if (!\is_string($string)) {
-            throw InvalidArgumentHelper::factory(2, 'string');
+        if ( ! \is_string($string)) {
+            throw new \InvalidArgumentException(sprintf('Argument %d passed to %s must be a string, %s given', 2, __METHOD__, \gettype($string)));
         }
 
-        if (!\is_bool($ignoreCase)) {
-            throw InvalidArgumentHelper::factory(3, 'bool');
+        if ( ! \is_bool($ignoreCase)) {
+            throw new \InvalidArgumentException(sprintf('Argument %d passed to %s must be a bool, %s given', 3, __METHOD__, \gettype($ignoreCase)));
         }
 
-        $constraint = new LogicalNot(new StringContains(
-            $needle,
-            $ignoreCase
-        ));
+        $constraint = new LogicalNot(
+            new StringContains(
+                $needle,
+                $ignoreCase,
+            ),
+        );
 
         static::assertThat($string, $constraint, $message);
     }
