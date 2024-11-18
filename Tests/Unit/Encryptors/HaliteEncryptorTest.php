@@ -4,6 +4,7 @@ namespace Ambta\DoctrineEncryptBundle\Tests\Unit\Encryptors;
 
 use Ambta\DoctrineEncryptBundle\Encryptors\HaliteEncryptor;
 use PHPUnit\Framework\TestCase;
+use SodiumException;
 
 class HaliteEncryptorTest extends TestCase
 {
@@ -11,12 +12,12 @@ class HaliteEncryptorTest extends TestCase
 
     public function testEncryptExtension(): void
     {
-        if (! extension_loaded('sodium')) {
+        if ( ! extension_loaded('sodium')) {
             $this->markTestSkipped('This test only runs when the sodium extension is enabled.');
         }
-        $keyfile = __DIR__.'/fixtures/halite.key';
-        $key = file_get_contents($keyfile);
-        $halite = new HaliteEncryptor($keyfile);
+        $keyfile = __DIR__ . '/fixtures/halite.key';
+        $key     = file_get_contents($keyfile);
+        $halite  = new HaliteEncryptor($keyfile);
 
         $encrypted = $halite->encrypt(self::DATA);
         $this->assertNotSame(self::DATA, $encrypted);
@@ -29,10 +30,10 @@ class HaliteEncryptorTest extends TestCase
 
     public function testGenerateKey(): void
     {
-        if (! extension_loaded('sodium')) {
+        if ( ! extension_loaded('sodium')) {
             $this->markTestSkipped('This test only runs when the sodium extension is enabled.');
         }
-        $keyfile = sys_get_temp_dir().'/halite-'.md5(time());
+        $keyfile = sys_get_temp_dir() . '/halite-' . md5(time());
         if (file_exists($keyfile)) {
             unlink($keyfile);
         }
@@ -51,10 +52,10 @@ class HaliteEncryptorTest extends TestCase
         if (extension_loaded('sodium')) {
             $this->markTestSkipped('This only runs when the sodium extension is disabled.');
         }
-        $keyfile = __DIR__.'/fixtures/halite.key';
-        $halite = new HaliteEncryptor($keyfile);
+        $keyfile = __DIR__ . '/fixtures/halite.key';
+        $halite  = new HaliteEncryptor($keyfile);
 
-        $this->expectException(\SodiumException::class);
+        $this->expectException(SodiumException::class);
         $halite->encrypt(self::DATA);
     }
 

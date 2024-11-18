@@ -11,9 +11,9 @@ class DefuseEncryptorTest extends TestCase
 
     public function testEncrypt(): void
     {
-        $keyfile = __DIR__.'/fixtures/defuse.key';
-        $key = file_get_contents($keyfile);
-        $defuse = new DefuseEncryptor($keyfile);
+        $keyfile = __DIR__ . '/fixtures/defuse.key';
+        $key     = file_get_contents($keyfile);
+        $defuse  = new DefuseEncryptor($keyfile);
 
         $encrypted = $defuse->encrypt(self::DATA);
         $this->assertNotSame(self::DATA, $encrypted);
@@ -26,7 +26,7 @@ class DefuseEncryptorTest extends TestCase
 
     public function testGenerateKey(): void
     {
-        $keyfile = sys_get_temp_dir().'/defuse-'.md5(time());
+        $keyfile = sys_get_temp_dir() . '/defuse-' . md5(time());
         if (file_exists($keyfile)) {
             unlink($keyfile);
         }

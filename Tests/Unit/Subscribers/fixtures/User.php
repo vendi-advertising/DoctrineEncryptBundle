@@ -6,23 +6,10 @@ use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 
 class User
 {
-    /**
-     * @var string
-     * @Encrypted()
-     */
-    public $name;
-
-    /**
-     * @var string|null
-     * @Encrypted()
-     */
-    private $address;
-
-    public function __construct(string $name, ?string $address)
-    {
-        $this->name = $name;
-        $this->address = $address;
-    }
+    public function __construct(
+        #[Encrypted] public string $name,
+        #[Encrypted] private ?string $address,
+    ) {}
 
     public function getAddress(): ?string
     {

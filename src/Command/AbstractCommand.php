@@ -1,11 +1,14 @@
 <?php
+
 namespace Ambta\DoctrineEncryptBundle\Command;
 
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use Ambta\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber;
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use ReflectionClass;
+use ReflectionProperty;
 use Symfony\Component\Console\Command\Command;
 
 /**
@@ -26,33 +29,22 @@ abstract class AbstractCommand extends Command
     protected DoctrineEncryptSubscriber $subscriber;
 
     /**
-     * @var Reader
-     */
-    protected Reader $annotationReader;
-
-    /**
      * AbstractCommand constructor.
      *
-     * @param EntityManager             $entityManager
-     * @param Reader                    $annotationReader
+     * @param EntityManager $entityManager
      * @param DoctrineEncryptSubscriber $subscriber
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        Reader $annotationReader,
-        DoctrineEncryptSubscriber $subscriber
+        DoctrineEncryptSubscriber $subscriber,
     ) {
         parent::__construct();
         $this->entityManager = $entityManager;
-        $this->annotationReader = $annotationReader;
-        $this->subscriber = $subscriber;
+        $this->subscriber    = $subscriber;
     }
 
     /**
-     * Get an result iterator over the whole table of an entity.
-     *
-     * @param string $entityName
-     * @return iterable|array
+     * Get a result iterator over the whole table of an entity.
      */
     protected function getEntityIterator(string $entityName): iterable
     {
@@ -63,37 +55,30 @@ abstract class AbstractCommand extends Command
 
     /**
      * Get the number of rows in an entity-table
-     *
-     * @param string $entityName
-     *
-     * @return int
      */
     protected function getTableCount(string $entityName): int
     {
         $query = $this->entityManager->createQuery(sprintf('SELECT COUNT(o) FROM %s o', $entityName));
 
-        return (int) $query->getSingleScalarResult();
+        return (int)$query->getSingleScalarResult();
     }
 
     /**
      * Return an array of entity-metadata for all entities
      * that have at least one encrypted property.
-     *
-     * @return array
      */
     protected function getEncryptionableEntityMetaData(): array
     {
         $validMetaData = [];
         $metaDataArray = $this->entityManager->getMetadataFactory()->getAllMetadata();
 
-        foreach ($metaDataArray as $entityMetaData)
-        {
+        foreach ($metaDataArray as $entityMetaData) {
             if ($entityMetaData instanceof ClassMetadataInfo and $entityMetaData->isMappedSuperclass) {
                 continue;
             }
 
             $properties = $this->getEncryptionableProperties($entityMetaData);
-            if (count($properties) == 0) {
+            if (count($properties) === 0) {
                 continue;
             }
 
@@ -103,20 +88,33 @@ abstract class AbstractCommand extends Command
         return $validMetaData;
     }
 
+    private function getAttributeForPropertyByName(ReflectionProperty $refProperty, string $attributeName): ?object
+    {
+        $attributes = $refProperty->getAttributes($attributeName, \ReflectionAttribute::IS_INSTANCEOF);
+        if (count($attributes) > 0) {
+            return $attributes[0]->newInstance();
+        }
+
+        return null;
+    }
+
+    private function hasAttributeForPropertyByName(ReflectionProperty $refProperty, string $attributeName): bool
+    {
+        return count($refProperty->getAttributes($attributeName, \ReflectionAttribute::IS_INSTANCEOF)) > 0;
+    }
+
     /**
-     * @param $entityMetaData
-     *
-     * @return array
+     * @throws \ReflectionException
      */
     protected function getEncryptionableProperties($entityMetaData): array
     {
         //Create reflectionClass for each meta data object
-        $reflectionClass = new \ReflectionClass($entityMetaData->name);
-        $propertyArray = $reflectionClass->getProperties();
-        $properties    = [];
+        $reflectionClass = new ReflectionClass($entityMetaData->name);
+        $propertyArray   = $reflectionClass->getProperties();
+        $properties      = [];
 
         foreach ($propertyArray as $property) {
-            if ($this->annotationReader->getPropertyAnnotation($property, 'Ambta\DoctrineEncryptBundle\Configuration\Encrypted')) {
+            if($property = $this->getAttributeForPropertyByName($property, Encrypted::class)) {
                 $properties[] = $property;
             }
         }

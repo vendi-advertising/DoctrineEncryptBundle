@@ -1,39 +1,55 @@
 {
   "name": "vendi-advertising/doctrine-encrypt-bundle",
   "type": "library",
-  "keywords": ["doctrine", "symfony", "halite", "defuse", "encrypt", "decrypt"],
+  "keywords": [
+    "doctrine",
+    "symfony",
+    "halite",
+    "defuse",
+    "encrypt",
+    "decrypt"
+  ],
   "license": "MIT",
   "description": "Encrypted symfony entity's by verified and standardized libraries",
   "require": {
-    "php": "^8.0|^8.1",
+    "php": "^8.2|^8.3",
     "paragonie/halite": "^4.6",
     "paragonie/sodium_compat": "^1.5",
     "doctrine/orm": "^2.5",
-    "symfony/property-access": "^5|^6",
-    "symfony/dependency-injection": "^5|^6",
-    "symfony/yaml": "^5|^6",
-    "symfony/http-kernel": "^5|^6",
-    "symfony/config": "^5|^6"
+    "symfony/property-access": "^6",
+    "symfony/dependency-injection": "^6",
+    "symfony/yaml": "^6",
+    "symfony/http-kernel": "^6",
+    "symfony/config": "^6"
   },
   "require-dev": {
     "phpunit/phpunit": "^8|^9",
     "defuse/php-encryption": "^2.1",
-    "symfony/cache": "^5|^6"
+    "symfony/cache": "^6",
+    "symfony/var-dumper": "^7.1"
   },
   "suggest": {
     "defuse/php-encryption": "Alternative for halite for use with older php-versions",
     "ext-sodium": "Required to use halite encryption library."
   },
   "autoload": {
-    "psr-4": { "Ambta\\DoctrineEncryptBundle\\": "src/" }
+    "psr-4": {
+      "Ambta\\DoctrineEncryptBundle\\": "src/"
+    }
   },
   "autoload-dev": {
-    "psr-4": { "Ambta\\DoctrineEncryptBundle\\Tests\\": "Tests/" }
+    "psr-4": {
+      "Ambta\\DoctrineEncryptBundle\\Tests\\": "Tests/"
+    }
   },
   "authors": [
     {
       "name": "GiveMeAllYourCats",
       "email": "specamps@gmail.com"
-    }
+    },
+    {
+      "name": "Chris Haas",
+      "email": "chris@vendiadvertising.com"
+      }
   ]
 }
