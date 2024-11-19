@@ -1,40 +1,15 @@
 services:
 
-    ambta_doctrine_encrypt.orm_pre_update_listener:
+    ambta_doctrine_encrypt.listener:
         class: Ambta\DoctrineEncryptBundle\EventListener\EntityEncryptDecryptListener
         arguments:
             - "@ambta_doctrine_encrypt.encryptor"
         tags:
             - { name: doctrine.event_listener, event: preUpdate }
-    ambta_doctrine_encrypt.orm_post_load_listener:
-        class: Ambta\DoctrineEncryptBundle\EventListener\EntityEncryptDecryptListener
-        arguments:
-            - "@ambta_doctrine_encrypt.encryptor"
-        tags:
             - { name: doctrine.event_listener, event: postLoad }
-    ambta_doctrine_encrypt.orm_post_update_listener:
-        class: Ambta\DoctrineEncryptBundle\EventListener\EntityEncryptDecryptListener
-        arguments:
-            - "@ambta_doctrine_encrypt.encryptor"
-        tags:
             - { name: doctrine.event_listener, event: postUpdate }
-    ambta_doctrine_encrypt.orm_pre_flush_listener:
-        class: Ambta\DoctrineEncryptBundle\EventListener\EntityEncryptDecryptListener
-        arguments:
-            - "@ambta_doctrine_encrypt.encryptor"
-        tags:
             - { name: doctrine.event_listener, event: preFlush }
-    ambta_doctrine_encrypt.orm_post_flush_listener:
-        class: Ambta\DoctrineEncryptBundle\EventListener\EntityEncryptDecryptListener
-        arguments:
-            - "@ambta_doctrine_encrypt.encryptor"
-        tags:
             - { name: doctrine.event_listener, event: postFlush }
-    ambta_doctrine_encrypt.orm_on_flush_listener:
-        class: Ambta\DoctrineEncryptBundle\EventListener\EntityEncryptDecryptListener
-        arguments:
-            - "@ambta_doctrine_encrypt.encryptor"
-        tags:
             - { name: doctrine.event_listener, event: onFlush }
 
     ambta_doctrine_encrypt.encryptor:
@@ -47,18 +22,18 @@ services:
         tags: [ 'console.command' ]
         arguments:
             - "@doctrine.orm.entity_manager"
-            - "@ambta_doctrine_encrypt.subscriber"
+            - "@ambta_doctrine_encrypt.listener"
 
     ambta_doctrine_encrypt.command.encrypt.database:
         class: Ambta\DoctrineEncryptBundle\Command\DoctrineEncryptDatabaseCommand
         tags: [ 'console.command' ]
         arguments:
             - "@doctrine.orm.entity_manager"
-            - "@ambta_doctrine_encrypt.subscriber"
+            - "@ambta_doctrine_encrypt.listener"
 
     ambta_doctrine_encrypt.command.encrypt.status:
         class: Ambta\DoctrineEncryptBundle\Command\DoctrineEncryptStatusCommand
         tags: [ 'console.command' ]
         arguments:
             - "@doctrine.orm.entity_manager"
-            - "@ambta_doctrine_encrypt.subscriber"
+            - "@ambta_doctrine_encrypt.listener"
