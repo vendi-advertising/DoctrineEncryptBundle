@@ -3,11 +3,13 @@
 namespace Ambta\DoctrineEncryptBundle\Tests\Unit\Subscribers;
 
 use Ambta\DoctrineEncryptBundle\Encryptors\EncryptorInterface;
-use Ambta\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber;
+
+//use Ambta\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber;
+use Ambta\DoctrineEncryptBundle\EventListener\AbstractEntityListener;
+use Ambta\DoctrineEncryptBundle\EventListener\EntityEncryptDecryptListener;
 use Ambta\DoctrineEncryptBundle\Tests\Unit\Subscribers\fixtures\ExtendedUser;
 use Ambta\DoctrineEncryptBundle\Tests\Unit\Subscribers\fixtures\User;
 use Ambta\DoctrineEncryptBundle\Tests\Unit\Subscribers\fixtures\WithUser;
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
@@ -18,9 +20,6 @@ use PHPUnit\Framework\TestCase;
 
 class DoctrineEncryptSubscriberTest extends TestCase
 {
-    /**
-     * @var DoctrineEncryptSubscriber
-     */
     private $subscriber;
 
     /**
@@ -44,10 +43,10 @@ class DoctrineEncryptSubscriberTest extends TestCase
                 return preg_replace('/^encrypted-/', '', $arg);
             });
 
-        $this->subscriber = new DoctrineEncryptSubscriber($this->encryptor);
+        $this->subscriber = new EntityEncryptDecryptListener($this->encryptor);
     }
 
-    public function testSetRestorEncryptor(): void
+    public function testSetRestoreEncryptor(): void
     {
         $replaceEncryptor = $this->createMock(EncryptorInterface::class);
 

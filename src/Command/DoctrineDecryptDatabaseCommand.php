@@ -50,10 +50,10 @@ class DoctrineDecryptDatabaseCommand extends AbstractCommand
             if (isset($supportedExtensions[$input->getArgument('encryptor')])) {
                 $reflection = new ReflectionClass($supportedExtensions[$input->getArgument('encryptor')]);
                 $encryptor  = $reflection->newInstance();
-                $this->subscriber->setEncryptor($encryptor);
+                $this->listener->setEncryptor($encryptor);
             } else {
                 if (class_exists($input->getArgument('encryptor'))) {
-                    $this->subscriber->setEncryptor($input->getArgument('encryptor'));
+                    $this->listener->setEncryptor($input->getArgument('encryptor'));
                 } else {
                     $output->writeln('Given encryptor does not exists');
 
@@ -78,7 +78,7 @@ class DoctrineDecryptDatabaseCommand extends AbstractCommand
 
         $confirmationQuestion = new ConfirmationQuestion(
             '<question>' . count($metaDataArray) . ' entities found which are containing ' . $propertyCount . ' properties with the encryption tag. ' . PHP_EOL . '' .
-            'Which are going to be decrypted with [' . get_class($this->subscriber->getEncryptor()) . ']. ' . PHP_EOL . '' .
+            'Which are going to be decrypted with [' . get_class($this->listener->getEncryptor()) . ']. ' . PHP_EOL . '' .
             'Wrong settings can mess up your data and it will be unrecoverable. ' . PHP_EOL . '' .
             'I advise you to make <bg=yellow;options=bold>a backup</bg=yellow;options=bold>. ' . PHP_EOL . '' .
             'Continue with this action? (y/yes)</question>', false,
@@ -108,7 +108,7 @@ class DoctrineDecryptDatabaseCommand extends AbstractCommand
                 $entityReflectionClass = new ReflectionClass($entity);
 
                 //Get the current encryptor used
-                $encryptorUsed = $this->subscriber->getEncryptor();
+                $encryptorUsed = $this->listener->getEncryptor();
 
                 //Loop through the property's in the entity
                 foreach ($this->getEncryptionableProperties($metaData) as $property) {
@@ -125,7 +125,7 @@ class DoctrineDecryptDatabaseCommand extends AbstractCommand
                     }
                 }
 
-                $this->subscriber->setEncryptor();
+                $this->listener->setEncryptor();
                 $this->entityManager->persist($entity);
 
                 if (($i % $batchSize) === 0) {
@@ -135,17 +135,17 @@ class DoctrineDecryptDatabaseCommand extends AbstractCommand
                 $progressBar->advance(1);
                 $i++;
 
-                $this->subscriber->setEncryptor($encryptorUsed);
+                $this->listener->setEncryptor($encryptorUsed);
             }
 
 
             $progressBar->finish();
             $output->writeln('');
-            $encryptorUsed = $this->subscriber->getEncryptor();
-            $this->subscriber->setEncryptor();
+            $encryptorUsed = $this->listener->getEncryptor();
+            $this->listener->setEncryptor();
             $this->entityManager->flush();
             $this->entityManager->clear();
-            $this->subscriber->setEncryptor($encryptorUsed);
+            $this->listener->setEncryptor($encryptorUsed);
         }
 
         $output->writeln(PHP_EOL . 'Decryption finished values found: <info>' . $valueCounter . '</info>, decrypted: <info>' . $this->subscriber->decryptCounter . '</info>.' . PHP_EOL . 'All values are now decrypted.');

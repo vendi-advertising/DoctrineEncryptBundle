@@ -48,10 +48,10 @@ class DoctrineEncryptDatabaseCommand extends AbstractCommand
             if (isset($supportedExtensions[$input->getArgument('encryptor')])) {
                 $reflection = new ReflectionClass($supportedExtensions[$input->getArgument('encryptor')]);
                 $encryptor  = $reflection->newInstance();
-                $this->subscriber->setEncryptor($encryptor);
+                $this->listener->setEncryptor($encryptor);
             } else {
                 if (class_exists($input->getArgument('encryptor'))) {
-                    $this->subscriber->setEncryptor($input->getArgument('encryptor'));
+                    $this->listener->setEncryptor($input->getArgument('encryptor'));
                 } else {
                     $output->writeln('Given encryptor does not exists');
 
@@ -64,7 +64,7 @@ class DoctrineEncryptDatabaseCommand extends AbstractCommand
         $metaDataArray        = $this->getEncryptionableEntityMetaData();
         $confirmationQuestion = new ConfirmationQuestion(
             '<question>' . count($metaDataArray) . ' entities found which are containing properties with the encryption tag.' . PHP_EOL . '' .
-            'Which are going to be encrypted with [' . get_class($this->subscriber->getEncryptor()) . ']. ' . PHP_EOL . '' .
+            'Which are going to be encrypted with [' . get_class($this->listener->getEncryptor()) . ']. ' . PHP_EOL . '' .
             'Wrong settings can mess up your data and it will be unrecoverable. ' . PHP_EOL . '' .
             'I advise you to make <bg=yellow;options=bold>a backup</bg=yellow;options=bold>. ' . PHP_EOL . '' .
             'Continue with this action? (y/yes)</question>', false,
@@ -86,7 +86,7 @@ class DoctrineEncryptDatabaseCommand extends AbstractCommand
             $output->writeln(sprintf('Processing <comment>%s</comment>', $metaData->name));
             $progressBar = new ProgressBar($output, $totalCount);
             foreach ($iterator as $row) {
-                $this->subscriber->processFields((is_array($row) ? $row[0] : $row));
+                $this->listener->processFields((is_array($row) ? $row[0] : $row));
 
                 if (($i % $batchSize) === 0) {
                     $this->entityManager->flush();
@@ -102,7 +102,7 @@ class DoctrineEncryptDatabaseCommand extends AbstractCommand
         }
 
         // Say it is finished
-        $output->writeln('Encryption finished. Values encrypted: <info>' . $this->subscriber->encryptCounter . ' values</info>.' . PHP_EOL . 'All values are now encrypted.');
+        $output->writeln('Encryption finished. Values encrypted: <info>' . $this->listener->encryptCounter . ' values</info>.' . PHP_EOL . 'All values are now encrypted.');
 
         return 1;
     }

@@ -3,8 +3,7 @@
 namespace Ambta\DoctrineEncryptBundle\Command;
 
 use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
-use Ambta\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber;
-use Doctrine\ORM\EntityManager;
+use Ambta\DoctrineEncryptBundle\EventListener\EntityEncryptDecryptListener;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use ReflectionClass;
@@ -18,29 +17,11 @@ use Symfony\Component\Console\Command\Command;
  **/
 abstract class AbstractCommand extends Command
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected EntityManagerInterface|EntityManager $entityManager;
-
-    /**
-     * @var DoctrineEncryptSubscriber
-     */
-    protected DoctrineEncryptSubscriber $subscriber;
-
-    /**
-     * AbstractCommand constructor.
-     *
-     * @param EntityManager $entityManager
-     * @param DoctrineEncryptSubscriber $subscriber
-     */
     public function __construct(
-        EntityManagerInterface $entityManager,
-        DoctrineEncryptSubscriber $subscriber,
+        protected EntityManagerInterface $entityManager,
+        protected EntityEncryptDecryptListener $listener,
     ) {
         parent::__construct();
-        $this->entityManager = $entityManager;
-        $this->subscriber    = $subscriber;
     }
 
     /**
@@ -114,7 +95,7 @@ abstract class AbstractCommand extends Command
         $properties      = [];
 
         foreach ($propertyArray as $property) {
-            if($property = $this->getAttributeForPropertyByName($property, Encrypted::class)) {
+            if ($property = $this->getAttributeForPropertyByName($property, Encrypted::class)) {
                 $properties[] = $property;
             }
         }

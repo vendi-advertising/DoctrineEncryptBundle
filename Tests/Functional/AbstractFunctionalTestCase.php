@@ -5,7 +5,11 @@ namespace Ambta\DoctrineEncryptBundle\Tests\Functional;
 
 
 use Ambta\DoctrineEncryptBundle\Encryptors\EncryptorInterface;
-use Ambta\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber;
+use Ambta\DoctrineEncryptBundle\EventListener\EntityPostLoadListener;
+use Ambta\DoctrineEncryptBundle\EventListener\EntityPostUpdateListener;
+use Ambta\DoctrineEncryptBundle\EventListener\EntityPreUpdateListener;
+use Ambta\DoctrineEncryptBundle\EventListener\EntityEncryptDecryptListener;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Logging\DebugStack;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;
@@ -14,10 +18,12 @@ use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\TestCase;
 
+//use Ambta\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber;
+
 abstract class AbstractFunctionalTestCase extends TestCase
 {
-    /** @var DoctrineEncryptSubscriber */
-    protected $subscriber;
+//    /** @var DoctrineEncryptSubscriber */
+//    protected $subscriber;
     /** @var EncryptorInterface */
     protected $encryptor;
     /** @var false|string */
@@ -52,7 +58,7 @@ abstract class AbstractFunctionalTestCase extends TestCase
         ];
 
         // obtaining the entity manager
-        $this->entityManager = EntityManager::create($conn, $config);
+        $this->entityManager = new EntityManager(DriverManager::getConnection($conn), $config);
 
         $schemaTool = new SchemaTool($this->entityManager);
         $classes    = $this->entityManager->getMetadataFactory()->getAllMetadata();
@@ -62,9 +68,11 @@ abstract class AbstractFunctionalTestCase extends TestCase
         $this->sqlLoggerStack = new DebugStack();
         $this->entityManager->getConnection()->getConfiguration()->setSQLLogger($this->sqlLoggerStack);
 
-        $this->encryptor  = $this->getEncryptor();
-        $this->subscriber = new DoctrineEncryptSubscriber($this->encryptor);
-        $this->entityManager->getEventManager()->addEventSubscriber($this->subscriber);
+        $this->encryptor = $this->getEncryptor();
+        $listener        = new EntityEncryptDecryptListener($this->encryptor);
+//        $this->subscriber = new DoctrineEncryptSubscriber($this->encryptor);
+//        $this->entityManager->getEventManager()->addEventSubscriber($this->subscriber);
+        $this->entityManager->getEventManager()->addEventListener(['postLoad', 'postUpdate', 'preFlush', 'preUpdate', 'onFlush', 'postFlush'], $listener);
 
         error_reporting(E_ALL);
     }

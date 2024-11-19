@@ -1,14 +1,41 @@
 services:
 
-    ambta_doctrine_encrypt.orm_subscriber:
-        class: Ambta\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber
+    ambta_doctrine_encrypt.orm_pre_update_listener:
+        class: Ambta\DoctrineEncryptBundle\EventListener\EntityEncryptDecryptListener
         arguments:
             - "@ambta_doctrine_encrypt.encryptor"
         tags:
-            - { name: doctrine.event_subscriber }
-
-    ambta_doctrine_encrypt.subscriber:
-        alias: ambta_doctrine_encrypt.orm_subscriber
+            - { name: doctrine.event_listener, event: preUpdate }
+    ambta_doctrine_encrypt.orm_post_load_listener:
+        class: Ambta\DoctrineEncryptBundle\EventListener\EntityEncryptDecryptListener
+        arguments:
+            - "@ambta_doctrine_encrypt.encryptor"
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }
+    ambta_doctrine_encrypt.orm_post_update_listener:
+        class: Ambta\DoctrineEncryptBundle\EventListener\EntityEncryptDecryptListener
+        arguments:
+            - "@ambta_doctrine_encrypt.encryptor"
+        tags:
+            - { name: doctrine.event_listener, event: postUpdate }
+    ambta_doctrine_encrypt.orm_pre_flush_listener:
+        class: Ambta\DoctrineEncryptBundle\EventListener\EntityEncryptDecryptListener
+        arguments:
+            - "@ambta_doctrine_encrypt.encryptor"
+        tags:
+            - { name: doctrine.event_listener, event: preFlush }
+    ambta_doctrine_encrypt.orm_post_flush_listener:
+        class: Ambta\DoctrineEncryptBundle\EventListener\EntityEncryptDecryptListener
+        arguments:
+            - "@ambta_doctrine_encrypt.encryptor"
+        tags:
+            - { name: doctrine.event_listener, event: postFlush }
+    ambta_doctrine_encrypt.orm_on_flush_listener:
+        class: Ambta\DoctrineEncryptBundle\EventListener\EntityEncryptDecryptListener
+        arguments:
+            - "@ambta_doctrine_encrypt.encryptor"
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
 
     ambta_doctrine_encrypt.encryptor:
         class: "%ambta_doctrine_encrypt.encryptor_class_name%"
