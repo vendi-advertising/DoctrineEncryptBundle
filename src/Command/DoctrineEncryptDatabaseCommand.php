@@ -21,7 +21,7 @@ class DoctrineEncryptDatabaseCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('doctrine:encrypt:database')

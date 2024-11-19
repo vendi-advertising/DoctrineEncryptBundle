@@ -17,7 +17,7 @@ class DoctrineEncryptStatusCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('doctrine:encrypt:status')
